@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { TodoItem } from "./TodoItem";
+import { Construction } from "lucide-react";
 
 type priority = "urgente" | "Moyenne" | "basse";
 
@@ -42,7 +43,20 @@ if (filter === 'Tous') {
 }else {
   filteredTodos = todos.filter((todo) => todo.priority === filter);
 }
+Û
+const urgentCount = todos.filter((t) => t.priority === "urgente").length;
+const mediumCount = todos.filter((t) => t.priority === "Moyenne").length;
+const lowCount = todos.filter((t) => t.priority === "basse").length;
 
+
+ function deleteTodo(id: number) {
+  const newTodos = todos.filter((todo) => todo.id !== id);
+  setTodos(newTodos);
+}
+
+const 
+
+const totalCount = todos.length;
   return (
     <div className="flex justify-center">
       <div className="w-2/3 flex-col gap-4 my-15 bg-base-200 p-4 rounded-2xl">
@@ -62,19 +76,41 @@ if (filter === 'Tous') {
           <div className="flex flex-wrap gap-4">
             <button className={`btn btn-soft ${filter === "Tous" ? "btn-primary" : ""}`}
              onClick={() => setFilter("Tous")}>
-              tous
+              tous {totalCount}
+              </button>
+              <button className={`btn btn-soft ${filter === "urgente" ? "btn-primary" : ""}`}
+             onClick={() => setFilter("urgente")}>
+              urgent {urgentCount}
+              </button>
+              <button className={`btn btn-soft ${filter === "Moyenne" ? "btn-primary" : ""}`}
+             onClick={() => setFilter("Moyenne")}>
+              moyen {mediumCount}
+              </button>
+              <button className={`btn btn-soft ${filter === "basse" ? "btn-primary" : ""}`}
+             onClick={() => setFilter("basse")}>
+              basse {lowCount}
               </button>
           </div>
           {filteredTodos.length > 0 ? (
             <ul className="divide-y divide-primary/20">
               {filteredTodos.map((todo) => (
                 <li key={todo.id}>
-                  <TodoItem todo={todo} />
+                  <TodoItem todo={todo} 
+                  ondelete={() => deleteTodo(todo.id)}
+                  />
                 </li>
               ))}
             </ul>
           ) : (
-            <div>Aucune tâche trouvée</div>
+            <div className=" flex justify-center items-center flex-col p-5"> 
+<div>
+        <Construction strokeWidth={1} className="w-40 h-40 text-primary"/>    
+  
+</div>
+<p className="text-sm text-center">
+Aucune tache pour ce filtre
+</p>
+              </div>
           )}
         </div>
       </div>
